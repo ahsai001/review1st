@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_message"
+            app:actionViewClass="android.widget.TextView"
+            android:icon="@drawable/message"
+            android:title="Message" />
+        <item
+            android:id="@+id/nav_store"
+            android:icon="@drawable/store"
+            android:title="Store" />
+        <item
+            android:id="@+id/nav_app_list"
+            android:icon="@drawable/otherapps"
+            android:title="Other Apps" />
+        <item
+            android:id="@+id/nav_bookmark_list"
+            android:icon="@drawable/baseline_bookmarks_24"
+            android:title="Bookmark" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/about"
+            android:title="About" />
+    </group>
+
+    <!--
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
+        </menu>
+    </item>
+    -->
+
+</menu>

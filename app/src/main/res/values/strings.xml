@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Review1st</string>
+    <string name="title_activity_home">HomeActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="share_title">review1st</string>
+    <string name="share_body_template">Review1st, cara mudah agar kamu tidak gaptek lagi\n\nsilahkan download aplikasinya di link \n\nhttp://www.review1st.com/download/android/</string>
+    <string name="feedback_mail_to">portal.review1st@gmail.com</string>
+    <string name="feedback_title">feedback for review1st</string>
+    <string name="feedback_body_template"></string>
+    <string name="title_tambah_pengingat">tambah pengingat</string>
+    <string name="message_tambah_pengingat">apakah anda benar ingin menambah</string>
+    <string name="lanjutkan">oke</string>
+    <string name="batalkan">batal</string>
+    <string name="message_sukses_add_reminder">sukses tambah pengingat</string>
+    <string name="filter_view_http_review1st">Review1st</string>
+</resources>
