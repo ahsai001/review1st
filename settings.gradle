@@ -1,5 +1,2 @@
 include ':app'
 
-
-include ':zlcore'
-project(':zlcore').projectDir = new File(settingsDir, '../../../zl-core/zlcore')
