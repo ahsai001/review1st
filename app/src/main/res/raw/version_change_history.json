@@ -2,5 +2,8 @@
     {
         "item": "version 1.0.1.0",
         "description": "- versi awal aplikasi"
+    },{
+        "item": "version 1.2.2.6",
+        "description": "- ubah tema aplikasi menjadi merah\n- menambahkan menu-menu baru\n- menambahkan fitur buka aplikasi melalui link yg di klik (deep link)"
     }
 ]

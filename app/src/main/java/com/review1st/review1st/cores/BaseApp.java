@@ -1,15 +1,17 @@
 package com.review1st.review1st.cores;
 
 import com.zaitunlabs.zlcore.api.APIConstant;
-import com.zaitunlabs.zlcore.api.models.AppListDataModel;
-import com.zaitunlabs.zlcore.api.models.AppListModel;
-import com.zaitunlabs.zlcore.api.models.AppListPagingModel;
-import com.zaitunlabs.zlcore.api.models.BookmarkModel;
-import com.zaitunlabs.zlcore.api.models.InformationModel;
-import com.zaitunlabs.zlcore.api.models.StoreDataModel;
-import com.zaitunlabs.zlcore.api.models.StoreModel;
-import com.zaitunlabs.zlcore.api.models.StorePagingModel;
+import com.zaitunlabs.zlcore.models.AppListDataModel;
+import com.zaitunlabs.zlcore.models.AppListModel;
+import com.zaitunlabs.zlcore.models.AppListPagingModel;
+import com.zaitunlabs.zlcore.models.BookmarkModel;
+import com.zaitunlabs.zlcore.models.InformationModel;
+import com.zaitunlabs.zlcore.models.StoreDataModel;
+import com.zaitunlabs.zlcore.models.StoreModel;
+import com.zaitunlabs.zlcore.models.StorePagingModel;
 import com.zaitunlabs.zlcore.core.BaseApplication;
+
+
 
 /**
  * Created by ahsai on 4/20/2018.

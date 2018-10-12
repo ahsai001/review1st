@@ -8,4 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="NavigationView">
+        <item name="android:textColorSecondary">@color/colorPrimary</item>
+    </style>
+
 </resources>

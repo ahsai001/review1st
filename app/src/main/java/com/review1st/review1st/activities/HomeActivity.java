@@ -7,7 +7,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
@@ -41,13 +43,13 @@ import com.zaitunlabs.zlcore.activities.BookmarkListActivity;
 import com.zaitunlabs.zlcore.activities.MessageListActivity;
 import com.zaitunlabs.zlcore.activities.StoreActivity;
 import com.zaitunlabs.zlcore.api.APIConstant;
-import com.zaitunlabs.zlcore.api.models.InformationModel;
+import com.zaitunlabs.zlcore.models.InformationModel;
 import com.zaitunlabs.zlcore.core.BaseActivity;
 import com.zaitunlabs.zlcore.events.InfoCounterEvent;
 import com.zaitunlabs.zlcore.events.ShowBookmarkInfoEvent;
 import com.zaitunlabs.zlcore.fragments.GeneralWebViewFragment;
 import com.zaitunlabs.zlcore.modules.about.AboutUs;
-import com.zaitunlabs.zlcore.services.SendTokenIntentService;
+import com.zaitunlabs.zlcore.services.*;
 import com.zaitunlabs.zlcore.utils.CommonUtils;
 import com.zaitunlabs.zlcore.utils.EventsUtils;
 import com.zaitunlabs.zlcore.utils.LinkUtils;
@@ -98,10 +100,10 @@ public class HomeActivity extends BaseActivity
                 new Runnable() {
                     @Override
                     public void run() {
-                        WebViewFragment oldFragment = (WebViewFragment)getSupportFragmentManager().findFragmentByTag(GeneralWebViewFragment.FRAGMENT_TAG);
+                        WebViewFragment oldFragment = (WebViewFragment) getSupportFragmentManager().findFragmentByTag(GeneralWebViewFragment.FRAGMENT_TAG);
 
                         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        if(oldFragment != null){
+                        if (oldFragment != null) {
                             transaction.remove(oldFragment);
                         }
                         transaction.commit();
@@ -110,7 +112,7 @@ public class HomeActivity extends BaseActivity
 
                         transaction = getSupportFragmentManager().beginTransaction();
                         newFragment = new WebViewFragment();
-                        newFragment.setArg(1, AppConfig.mainURL, null,-1,true, true, null, null, null);
+                        newFragment.setArg(1, AppConfig.mainURL, null, -1, true, true, null, null, null);
                         transaction.replace(R.id.home_container, newFragment, WebViewFragment.FRAGMENT_TAG);
                         transaction.commit();
 
@@ -134,7 +136,6 @@ public class HomeActivity extends BaseActivity
         AdView mAdView = findViewById(R.id.home_addview);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-
     }
 
     @Override
@@ -145,7 +146,7 @@ public class HomeActivity extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
-        SendTokenIntentService.startSending(this, APIConstant.API_APPID, false);
+        FCMIntentService.startSending(this, APIConstant.API_APPID, false);
     }
 
     @Override
@@ -244,7 +245,7 @@ public class HomeActivity extends BaseActivity
                     0,R.string.feedback_mail_to, R.string.feedback_title, R.string.feedback_body_template,
                     0,R.raw.version_change_history, true, AppConfig.appLandingURL,
                     false, "Review1st", AppConfig.mainURL,getString(R.string.feedback_mail_to),R.mipmap.ic_launcher,"2018\nAll right reserved",
-                    R.color.colorPrimary,ContextCompat.getColor(this,android.R.color.white),AppConfig.appLandingURL);
+                    R.color.colorPrimary,ContextCompat.getColor(this,android.R.color.white),ContextCompat.getColor(this,android.R.color.white),AppConfig.aboutAppURL);
         } else if (id == R.id.nav_app_list) {
             AppListActivity.start(this);
         } else if (id == R.id.nav_store) {
@@ -253,6 +254,36 @@ public class HomeActivity extends BaseActivity
             MessageListActivity.start(this);
         } else if (id == R.id.nav_bookmark_list){
             BookmarkListActivity.start(this);
+        } else if (id == R.id.nav_home){
+            newFragment.openNewLink("https://www.review1st.com");
+        } else if (id == R.id.nav_reviews_layanan){
+            newFragment.openNewLink("https://www.review1st.com/category/review/layanan");
+        } else if (id == R.id.nav_reviews_mobil){
+            newFragment.openNewLink("https://www.review1st.com/category/review/mobil");
+        } else if (id == R.id.nav_reviews_produk){
+            newFragment.openNewLink("https://www.review1st.com/category/review/produk");
+        } else if (id == R.id.nav_reviews_smartphone){
+            newFragment.openNewLink("https://www.review1st.com/category/review/smartphone");
+        } else if (id == R.id.nav_news_teknologi){
+            newFragment.openNewLink("https://www.review1st.com/category/news/teknologi");
+        } else if (id == R.id.nav_news_otomotif){
+            newFragment.openNewLink("https://www.review1st.com/category/news/otomotif");
+        } else if (id == R.id.nav_news_operator){
+            newFragment.openNewLink("https://www.review1st.com/category/news/operator");
+        } else if (id == R.id.nav_aplikasi){
+            newFragment.openNewLink("https://www.review1st.com/category/aplikasi/");
+        } else if (id == R.id.nav_insight){
+            newFragment.openNewLink("https://www.review1st.com/category/insight/");
+        } else if (id == R.id.nav_kontak){
+            newFragment.openNewLink("https://www.review1st.com/contact-us/");
+        } else if (id == R.id.nav_tipstrik){
+            newFragment.openNewLink("https://www.review1st.com/category/tipstrik/");
+        } else if (id == R.id.nav_tentang_kami){
+            newFragment.openNewLink("https://www.review1st.com/about/");
+        } else if (id == R.id.nav_spesifikasi_mobil){
+            newFragment.openNewLink("https://www.review1st.com/p/spesifikasi/mobil");
+        } else if (id == R.id.nav_spesifikasi_smartphone){
+            newFragment.openNewLink("https://www.review1st.com/p/spesifikasi/smartphone");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -263,6 +294,10 @@ public class HomeActivity extends BaseActivity
     public static void start(Context context){
         Intent intent = new Intent(context, HomeActivity.class);
         context.startActivity(intent);
+    }
+
+    public void onClickDrawerItem(MenuItem menuItem){
+
     }
 
 

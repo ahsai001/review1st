@@ -2,43 +2,135 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_message"
+    <group android:id="@+id/nav_group_home" android:checkableBehavior="single">
+        <item android:checkable="true"
+            android:checked="true"
+            android:id="@+id/nav_home"
             app:actionViewClass="android.widget.TextView"
-            android:icon="@drawable/message"
-            android:title="Message" />
-        <item
-            android:id="@+id/nav_store"
-            android:icon="@drawable/store"
-            android:title="Store" />
-        <item
-            android:id="@+id/nav_app_list"
-            android:icon="@drawable/otherapps"
-            android:title="Other Apps" />
-        <item
-            android:id="@+id/nav_bookmark_list"
-            android:icon="@drawable/baseline_bookmarks_24"
-            android:title="Bookmark" />
-        <item
-            android:id="@+id/nav_about"
-            android:icon="@drawable/about"
-            android:title="About" />
+            android:icon="@drawable/baseline_home_24"
+            android:title="Home" />
     </group>
 
-    <!--
-    <item android:title="Communicate">
+    <item android:title="Reviews" android:checkable="true" android:onClick="onClickDrawerItem">
         <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+            <item android:checkable="true"
+                android:id="@+id/nav_reviews_mobil"
+                android:icon="@drawable/baseline_directions_car_24"
+                android:title="Mobil" />
+            <item android:checkable="true"
+                android:id="@+id/nav_reviews_layanan"
+                android:icon="@drawable/baseline_nature_people_24"
+                android:title="Layanan" />
+            <item android:checkable="true"
+                android:id="@+id/nav_reviews_produk"
+                android:icon="@drawable/baseline_web_24"
+                android:title="Produk" />
+            <item android:checkable="true"
+                android:id="@+id/nav_reviews_smartphone"
+                android:icon="@drawable/baseline_smartphone_24"
+                android:title="Smartphone" />
         </menu>
     </item>
-    -->
+    <item android:title="News"  android:checkable="true">
+        <menu>
+            <item android:checkable="true"
+                android:id="@+id/nav_news_teknologi"
+                android:icon="@drawable/baseline_watch_24"
+                android:title="Teknologi" />
+            <item android:checkable="true"
+                android:id="@+id/nav_news_operator"
+                android:icon="@drawable/baseline_tap_and_play_24"
+                android:title="Operator" />
+            <item android:checkable="true"
+                android:id="@+id/nav_news_otomotif"
+                android:icon="@drawable/baseline_commute_24"
+                android:title="Otomotif" />
+        </menu>
+    </item>
+
+
+
+    <group android:id="@+id/nav_group_aplikasi" android:checkableBehavior="single">
+    <item android:checkable="true"
+        android:id="@+id/nav_aplikasi"
+        app:actionViewClass="android.widget.TextView"
+        android:icon="@drawable/baseline_apps_24"
+        android:title="Aplikasi" />
+    </group>
+
+
+    <group android:id="@+id/nav_group_tipstrik" android:checkableBehavior="single">
+        <item android:checkable="true"
+            android:id="@+id/nav_tipstrik"
+            app:actionViewClass="android.widget.TextView"
+            android:icon="@drawable/baseline_format_size_24"
+            android:title="Tips Trik" />
+    </group>
+
+    <group android:id="@+id/nav_group_insight" android:checkableBehavior="single">
+    <item android:checkable="true"
+        android:id="@+id/nav_insight"
+        app:actionViewClass="android.widget.TextView"
+        android:icon="@drawable/baseline_insert_chart_outlined_24"
+        android:title="Insight" />
+    </group>
+
+    <item android:title="Spesifikasi">
+        <menu>
+            <item android:checkable="true"
+                android:id="@+id/nav_spesifikasi_smartphone"
+                android:icon="@drawable/baseline_smartphone_24"
+                android:title="Smartphone" />
+            <item android:checkable="true"
+                android:id="@+id/nav_spesifikasi_mobil"
+                android:icon="@drawable/baseline_directions_car_24"
+                android:title="Mobil" />
+        </menu>
+    </item>
+
+
+    <group android:id="@+id/nav_group_kontak" android:checkableBehavior="single">
+        <item android:checkable="true"
+            android:id="@+id/nav_kontak"
+            app:actionViewClass="android.widget.TextView"
+            android:icon="@drawable/baseline_pan_tool_24"
+            android:title="Kontak" />
+    </group>
+
+    <group android:id="@+id/nav_group_tentang_kami" android:checkableBehavior="single">
+        <item android:checkable="true"
+            android:id="@+id/nav_tentang_kami"
+            app:actionViewClass="android.widget.TextView"
+            android:icon="@drawable/baseline_sentiment_satisfied_alt_24"
+            android:title="Tentang Kami" />
+    </group>>
+
+    <item android:title="Miscellaneous">
+        <menu>
+            <item
+                android:id="@+id/nav_message"
+                app:actionViewClass="android.widget.TextView"
+                android:icon="@drawable/message"
+                android:title="Message" />
+            <item
+                android:id="@+id/nav_store"
+                android:icon="@drawable/baseline_work_24"
+                android:title="Store" />
+            <item
+                android:id="@+id/nav_app_list"
+                android:icon="@drawable/otherapps"
+                android:title="Promoted Apps" />
+            <item
+                android:id="@+id/nav_bookmark_list"
+                android:icon="@drawable/baseline_bookmarks_24"
+                android:title="Bookmark" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/baseline_perm_device_information_24"
+                android:title="About" />
+        </menu>
+    </item>
+
+
 
 </menu>

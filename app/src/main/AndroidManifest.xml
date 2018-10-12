@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.review1st.review1st">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,8 +14,8 @@
     <uses-permission android:name="android.permission.READ_CALENDAR" />
 
 
-
-    <supports-screens android:smallScreens="true"
+    <supports-screens
+        android:smallScreens="true"
         android:normalScreens="true"
         android:largeScreens="true"
         android:xlargeScreens="true"
@@ -27,6 +28,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.google.android.gms.ads.AD_MANAGER_APP"
+            android:value="true" />
 
         <activity
             android:name=".activities.InitApp"
@@ -47,19 +51,22 @@
             android:icon="@mipmap/ic_launcher"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter android:label="@string/filter_view_http_review1st">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http"
-                    android:host="www.review1st.com" />
+                <data
+                    android:scheme="https"
+                    android:host="www.review1st.com" android:pathPrefix="/"/>
             </intent-filter>
             <intent-filter android:label="@string/filter_view_http_review1st">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https"
-                    android:host="www.review1st.com" />
+                <data
+                    android:scheme="http"
+                    android:host="www.review1st.com" android:pathPrefix="/"/>
             </intent-filter>
         </activity>
 
