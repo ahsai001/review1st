@@ -69,6 +69,8 @@ public class HomeActivity extends BaseActivity
     private WebViewFragment newFragment;
     private TextView messageItemView;
     private PermissionUtils permissionUtils;
+    private String titleWebPage;
+    private String descWebPage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +114,7 @@ public class HomeActivity extends BaseActivity
 
                         transaction = getSupportFragmentManager().beginTransaction();
                         newFragment = new WebViewFragment();
-                        newFragment.setArg(1, AppConfig.mainURL, null, -1, true, true, null, null, null);
+                        newFragment.setArg(1, AppConfig.mainURL, null, -1, true, false, null, null, null);
                         transaction.replace(R.id.home_container, newFragment, WebViewFragment.FRAGMENT_TAG);
                         transaction.commit();
 
@@ -222,6 +224,12 @@ public class HomeActivity extends BaseActivity
             if(newFragment != null && newFragment.navigateBack()){
                 return true;
             }
+        } else if(id == R.id.action_home_share){
+            if(newFragment != null && newFragment.isVisible()
+                    && !TextUtils.isEmpty(titleWebPage) && !TextUtils.isEmpty(descWebPage)){
+                CommonUtils.shareContent(HomeActivity.this, "share via",
+                        titleWebPage, descWebPage+"\n\n"+"for more info\n\n"+newFragment.getCurrentUrl());
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -255,35 +263,41 @@ public class HomeActivity extends BaseActivity
         } else if (id == R.id.nav_bookmark_list){
             BookmarkListActivity.start(this);
         } else if (id == R.id.nav_home){
-            newFragment.openNewLink("https://www.review1st.com");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com");
+        } else if (id == R.id.nav_ig){
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/ig-stream/");
         } else if (id == R.id.nav_reviews_layanan){
-            newFragment.openNewLink("https://www.review1st.com/category/review/layanan");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/review/layanan");
         } else if (id == R.id.nav_reviews_mobil){
-            newFragment.openNewLink("https://www.review1st.com/category/review/mobil");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/review/mobil");
         } else if (id == R.id.nav_reviews_produk){
-            newFragment.openNewLink("https://www.review1st.com/category/review/produk");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/review/produk");
         } else if (id == R.id.nav_reviews_smartphone){
-            newFragment.openNewLink("https://www.review1st.com/category/review/smartphone");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/review/smartphone");
         } else if (id == R.id.nav_news_teknologi){
-            newFragment.openNewLink("https://www.review1st.com/category/news/teknologi");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/news/teknologi");
         } else if (id == R.id.nav_news_otomotif){
-            newFragment.openNewLink("https://www.review1st.com/category/news/otomotif");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/news/otomotif");
         } else if (id == R.id.nav_news_operator){
-            newFragment.openNewLink("https://www.review1st.com/category/news/operator");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/news/operator");
         } else if (id == R.id.nav_aplikasi){
-            newFragment.openNewLink("https://www.review1st.com/category/aplikasi/");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/aplikasi/");
         } else if (id == R.id.nav_insight){
-            newFragment.openNewLink("https://www.review1st.com/category/insight/");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/insight/");
         } else if (id == R.id.nav_kontak){
-            newFragment.openNewLink("https://www.review1st.com/contact-us/");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/contact-us/");
         } else if (id == R.id.nav_tipstrik){
-            newFragment.openNewLink("https://www.review1st.com/category/tipstrik/");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/tipstrik/");
         } else if (id == R.id.nav_tentang_kami){
-            newFragment.openNewLink("https://www.review1st.com/about/");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/about/");
         } else if (id == R.id.nav_spesifikasi_mobil){
-            newFragment.openNewLink("https://www.review1st.com/p/spesifikasi/mobil");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/p/spesifikasi/mobil");
         } else if (id == R.id.nav_spesifikasi_smartphone){
-            newFragment.openNewLink("https://www.review1st.com/p/spesifikasi/smartphone");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/p/spesifikasi/smartphone");
+        }
+
+        if(newFragment == null){
+            CommonUtils.showDialog1Option(HomeActivity.this, "Informasi", "Mohon untuk memberikan permission read phone state", null, null);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -331,6 +345,17 @@ public class HomeActivity extends BaseActivity
             @JavascriptInterface
             public void showInfo(String title, String info) {
                 CommonUtils.showInfo(activity,title,info);
+            }
+
+            @JavascriptInterface
+            public void giveInfo(String title, String info) {
+                ((HomeActivity)activity).titleWebPage = title;
+                ((HomeActivity)activity).descWebPage = info;
+            }
+
+            @JavascriptInterface
+            public void openBrowser(String link) {
+                CommonUtils.openBrowser(activity, link);
             }
 
             @JavascriptInterface

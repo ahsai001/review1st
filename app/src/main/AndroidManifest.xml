@@ -81,6 +81,13 @@
             </intent-filter>
         </service>
 
+
+        <provider
+            android:name="com.activeandroid.content.ContentProvider"
+            android:authorities="com.review1st.review1st"
+            android:enabled="true"
+            android:exported="false">
+        </provider>
     </application>
 
 </manifest>

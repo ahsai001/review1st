@@ -11,6 +11,14 @@
             android:title="Home" />
     </group>
 
+    <group android:id="@+id/nav_group_ig" android:checkableBehavior="single">
+        <item android:checkable="true"
+            android:id="@+id/nav_ig"
+            app:actionViewClass="android.widget.TextView"
+            android:icon="@drawable/baseline_web_24"
+            android:title="IG" />
+    </group>
+
     <item android:title="Reviews" android:checkable="true" android:onClick="onClickDrawerItem">
         <menu>
             <item android:checkable="true"

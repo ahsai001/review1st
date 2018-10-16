@@ -6,4 +6,10 @@
         android:orderInCategory="100"
         android:title="Open App In Browser"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_home_share"
+        android:orderInCategory="101"
+        android:title="Share This Page"
+        android:icon="@drawable/baseline_share_24"
+        app:showAsAction="ifRoom" />
 </menu>

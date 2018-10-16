@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.review1st.review1st.R;
 import com.zaitunlabs.zlcore.activities.BaseSplashActivity;
+import com.zaitunlabs.zlcore.api.APIConstant;
 import com.zaitunlabs.zlcore.utils.CommonUtils;
 
 /**
@@ -21,7 +22,7 @@ public class InitApp extends BaseSplashActivity {
 
     @Override
     protected String getCheckVersionUrl() {
-        return null;
+        return APIConstant.API_CHECK_VERSION;
     }
 
     @Override
