@@ -19,26 +19,15 @@
             android:title="IG" />
     </group>
 
-    <item android:title="Reviews" android:checkable="true" android:onClick="onClickDrawerItem">
-        <menu>
-            <item android:checkable="true"
-                android:id="@+id/nav_reviews_mobil"
-                android:icon="@drawable/baseline_directions_car_24"
-                android:title="Mobil" />
-            <item android:checkable="true"
-                android:id="@+id/nav_reviews_layanan"
-                android:icon="@drawable/baseline_nature_people_24"
-                android:title="Layanan" />
-            <item android:checkable="true"
-                android:id="@+id/nav_reviews_produk"
-                android:icon="@drawable/baseline_web_24"
-                android:title="Produk" />
-            <item android:checkable="true"
-                android:id="@+id/nav_reviews_smartphone"
-                android:icon="@drawable/baseline_smartphone_24"
-                android:title="Smartphone" />
-        </menu>
-    </item>
+    <group android:id="@+id/nav_group_reviews" android:checkableBehavior="single">
+        <item android:checkable="true"
+            android:id="@+id/nav_reviews"
+            app:actionViewClass="android.widget.TextView"
+            android:icon="@drawable/ic_rating"
+            android:title="Review" />
+    </group>
+
+
     <item android:title="News"  android:checkable="true">
         <menu>
             <item android:checkable="true"
@@ -46,13 +35,13 @@
                 android:icon="@drawable/baseline_watch_24"
                 android:title="Teknologi" />
             <item android:checkable="true"
-                android:id="@+id/nav_news_operator"
+                android:id="@+id/nav_news_telekomunikasi"
                 android:icon="@drawable/baseline_tap_and_play_24"
-                android:title="Operator" />
+                android:title="Telekomunikasi" />
             <item android:checkable="true"
-                android:id="@+id/nav_news_otomotif"
-                android:icon="@drawable/baseline_commute_24"
-                android:title="Otomotif" />
+                android:id="@+id/nav_news_rumor"
+                android:icon="@drawable/ic_from_mouth_to_mouth"
+                android:title="Rumor" />
         </menu>
     </item>
 
@@ -63,7 +52,7 @@
         android:id="@+id/nav_aplikasi"
         app:actionViewClass="android.widget.TextView"
         android:icon="@drawable/baseline_apps_24"
-        android:title="Aplikasi" />
+        android:title="Game &amp; Aplikasi" />
     </group>
 
 
@@ -75,12 +64,12 @@
             android:title="Tips Trik" />
     </group>
 
-    <group android:id="@+id/nav_group_insight" android:checkableBehavior="single">
+    <group android:id="@+id/nav_group_buyers_guide" android:checkableBehavior="single">
     <item android:checkable="true"
-        android:id="@+id/nav_insight"
+        android:id="@+id/nav_buyers_guide"
         app:actionViewClass="android.widget.TextView"
-        android:icon="@drawable/baseline_insert_chart_outlined_24"
-        android:title="Insight" />
+        android:icon="@drawable/ic_road_sign"
+        android:title="Buyers Guide" />
     </group>
 
     <item android:title="Spesifikasi">
@@ -90,6 +79,7 @@
                 android:icon="@drawable/baseline_smartphone_24"
                 android:title="Smartphone" />
             <item android:checkable="true"
+                android:visible="false"
                 android:id="@+id/nav_spesifikasi_mobil"
                 android:icon="@drawable/baseline_directions_car_24"
                 android:title="Mobil" />
@@ -118,15 +108,15 @@
             <item
                 android:id="@+id/nav_message"
                 app:actionViewClass="android.widget.TextView"
-                android:icon="@drawable/message"
+                android:icon="@drawable/baseline_notification_important_24"
                 android:title="Message" />
             <item
                 android:id="@+id/nav_store"
-                android:icon="@drawable/baseline_work_24"
+                android:icon="@drawable/ic_shop_24dp"
                 android:title="Store" />
             <item
                 android:id="@+id/nav_app_list"
-                android:icon="@drawable/otherapps"
+                android:icon="@drawable/baseline_apps_24"
                 android:title="Promoted Apps" />
             <item
                 android:id="@+id/nav_bookmark_list"
@@ -134,7 +124,7 @@
                 android:title="Bookmark" />
             <item
                 android:id="@+id/nav_about"
-                android:icon="@drawable/baseline_perm_device_information_24"
+                android:icon="@drawable/ic_info_outline_24dp"
                 android:title="About" />
         </menu>
     </item>

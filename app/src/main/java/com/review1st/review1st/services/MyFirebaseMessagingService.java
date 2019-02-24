@@ -5,6 +5,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.review1st.review1st.R;
 import com.review1st.review1st.activities.HomeActivity;
 import com.zaitunlabs.zlcore.utils.NotificationUtils;
+import com.zaitunlabs.zlcore.utils.PrefsData;
 
 import java.util.Map;
 
@@ -14,6 +15,16 @@ import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     final public static String smartFirebaseMessagingServiceTAG = "SmartFirebaseMessagingService";
+
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+
+        PrefsData.setPushyToken(s);
+        PrefsData.setPushyTokenSent(false);
+    }
+
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         String notifTitle = null;
@@ -28,6 +39,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Map<String, String> data = remoteMessage.getData();
 
         NotificationUtils.onMessageReceived(getBaseContext(),data, notifTitle, notifBody
-        ,HomeActivity.class, null, null, R.string.app_name,R.mipmap.ic_launcher);
+        ,HomeActivity.class, null, null, R.string.app_name,R.mipmap.ic_launcher, null);
     }
 }

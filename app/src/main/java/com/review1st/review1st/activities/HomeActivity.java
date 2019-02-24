@@ -2,35 +2,39 @@ package com.review1st.review1st.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.URLUtil;
+import android.webkit.WebView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
@@ -54,6 +58,7 @@ import com.zaitunlabs.zlcore.utils.CommonUtils;
 import com.zaitunlabs.zlcore.utils.EventsUtils;
 import com.zaitunlabs.zlcore.utils.LinkUtils;
 import com.zaitunlabs.zlcore.utils.PermissionUtils;
+import com.zaitunlabs.zlcore.utils.ViewUtils;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -136,7 +141,9 @@ public class HomeActivity extends BaseActivity
 
         MobileAds.initialize(this, "ca-app-pub-3647411985348830~9863330893");
         AdView mAdView = findViewById(R.id.home_addview);
-        AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("3AF746CE6613CC66CCB427F060752FDE")
+                .build();
         mAdView.loadAd(adRequest);
     }
 
@@ -208,8 +215,56 @@ public class HomeActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) menuItem.getActionView();
+
+        //SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        searchView.setIconifiedByDefault(false);
+        searchView.setQueryHint("Enter keywords");
+
+        menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                searchView.requestFocus();
+                ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).
+                        toggleSoftInput(InputMethodManager.SHOW_FORCED,
+                                InputMethodManager.HIDE_IMPLICIT_ONLY);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                searchView.clearFocus();
+                CommonUtils.hideKeyboard(HomeActivity.this);
+                return true;
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if(newFragment != null) {
+                    try {
+                        newFragment.openNewLink("https://www.review1st.com/?s="+CommonUtils.urlEncode(query));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                searchView.clearFocus();
+                CommonUtils.hideKeyboard(HomeActivity.this);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return true;
     }
 
@@ -266,24 +321,18 @@ public class HomeActivity extends BaseActivity
             if(newFragment != null) newFragment.openNewLink("https://www.review1st.com");
         } else if (id == R.id.nav_ig){
             if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/ig-stream/");
-        } else if (id == R.id.nav_reviews_layanan){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/review/layanan");
-        } else if (id == R.id.nav_reviews_mobil){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/review/mobil");
-        } else if (id == R.id.nav_reviews_produk){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/review/produk");
-        } else if (id == R.id.nav_reviews_smartphone){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/review/smartphone");
+        } else if (id == R.id.nav_reviews){
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/review/");
         } else if (id == R.id.nav_news_teknologi){
             if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/news/teknologi");
-        } else if (id == R.id.nav_news_otomotif){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/news/otomotif");
-        } else if (id == R.id.nav_news_operator){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/news/operator");
+        } else if (id == R.id.nav_news_telekomunikasi){
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/news/telekomunikasi");
+        } else if (id == R.id.nav_news_rumor){
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/news/rumor");
         } else if (id == R.id.nav_aplikasi){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/aplikasi/");
-        } else if (id == R.id.nav_insight){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/insight/");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/game-aplikasi/");
+        } else if (id == R.id.nav_buyers_guide) {
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/harga-spesifikasi/");
         } else if (id == R.id.nav_kontak){
             if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/contact-us/");
         } else if (id == R.id.nav_tipstrik){
@@ -321,9 +370,10 @@ public class HomeActivity extends BaseActivity
             return null;
         }
 
+
         @Override
-        public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-            super.onViewCreated(view, savedInstanceState);
+        public void setupWebview(WebView webView) {
+            super.setupWebview(webView);
             webView.addJavascriptInterface(new WebAppInterface(this.getActivity()), "review1st");
         }
 

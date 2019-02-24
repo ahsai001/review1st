@@ -26,8 +26,9 @@ public class InitApp extends BaseSplashActivity {
     }
 
     @Override
-    protected void doNextAction() {
+    protected boolean doNextAction() {
         HomeActivity.start(this);
+        return true;
     }
 
     @Override
