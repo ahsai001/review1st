@@ -318,31 +318,31 @@ public class HomeActivity extends BaseActivity
         } else if (id == R.id.nav_bookmark_list){
             BookmarkListActivity.start(this);
         } else if (id == R.id.nav_home){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com?clearhistory");
         } else if (id == R.id.nav_ig){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/ig-stream/");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/ig-stream/?clearhistory");
         } else if (id == R.id.nav_reviews){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/review/");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/review/?clearhistory");
         } else if (id == R.id.nav_news_teknologi){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/news/teknologi");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/news/teknologi?clearhistory");
         } else if (id == R.id.nav_news_telekomunikasi){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/news/telekomunikasi");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/news/telekomunikasi?clearhistory");
         } else if (id == R.id.nav_news_rumor){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/news/rumor");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/news/rumor?clearhistory");
         } else if (id == R.id.nav_aplikasi){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/game-aplikasi/");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/game-aplikasi/?clearhistory");
         } else if (id == R.id.nav_buyers_guide) {
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/harga-spesifikasi/");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/harga-spesifikasi/?clearhistory");
         } else if (id == R.id.nav_kontak){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/contact-us/");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/contact-us/?clearhistory");
         } else if (id == R.id.nav_tipstrik){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/tipstrik/");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/tipstrik/?clearhistory");
         } else if (id == R.id.nav_tentang_kami){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/about/");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/about/?clearhistory");
         } else if (id == R.id.nav_spesifikasi_mobil){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/p/spesifikasi/mobil");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/p/spesifikasi/mobil?clearhistory");
         } else if (id == R.id.nav_spesifikasi_smartphone){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/p/spesifikasi/smartphone");
+            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/p/spesifikasi/smartphone?clearhistory");
         }
 
         if(newFragment == null){
