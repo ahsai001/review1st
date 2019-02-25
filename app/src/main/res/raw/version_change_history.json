@@ -1,12 +1,15 @@
 [
     {
-        "item": "version 1.0.1.0",
-        "description": "- versi awal aplikasi"
+        "item": "version 1.4.4.16",
+        "description": "- perbaikan aplikasi karena masalah saat membuka beberapa menu\n- tambah fitur pencarian artikel berdasarkan kata kunci\n- merubah ikon pada menu drawer\n- peningkatan performa beberapa hal"
+    },{
+        "item": "version 1.3.3.10",
+        "description": "- perbaikan aplikasi karena force close saat bookmark\n- perubahan text saat berbagi\n- menambahkan menu IG"
     },{
         "item": "version 1.2.2.6",
         "description": "- ubah tema aplikasi menjadi merah\n- menambahkan menu-menu baru\n- menambahkan fitur buka aplikasi melalui link yg di klik (deep link)"
     },{
-        "item": "version 1.3.3.10",
-        "description": "- perbaikan aplikasi karena force close saat bookmark\n- perubahan text saat berbagi\n- menambahkan menu IG"
+        "item": "version 1.0.1.0",
+        "description": "- versi awal aplikasi"
     }
 ]
