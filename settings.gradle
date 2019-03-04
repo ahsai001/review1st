@@ -1,2 +1,6 @@
 include ':app'
 
+/*
+include ':zlcore'
+project(':zlcore').projectDir = new File(settingsDir, '../zlcore/zlcore')
+*/

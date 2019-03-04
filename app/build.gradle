@@ -38,7 +38,11 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    implementation 'com.github.ahsai001:zlcore:1.1.23.26'
+
+    implementation 'com.google.android.material:material:1.1.0-alpha03'
+
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
     implementation 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
@@ -48,6 +52,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:17.4.0'
     implementation 'com.google.firebase:firebase-ads:17.1.3'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
+
+    implementation 'com.github.ahsai001:zlcore:1.1.24.27'
+    //implementation project(':zlcore')
 
 }
 
