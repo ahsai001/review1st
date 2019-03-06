@@ -47,6 +47,7 @@ import com.zaitunlabs.zlcore.activities.BookmarkListActivity;
 import com.zaitunlabs.zlcore.activities.MessageListActivity;
 import com.zaitunlabs.zlcore.activities.StoreActivity;
 import com.zaitunlabs.zlcore.api.APIConstant;
+import com.zaitunlabs.zlcore.events.GeneralWebviewEvent;
 import com.zaitunlabs.zlcore.models.InformationModel;
 import com.zaitunlabs.zlcore.core.BaseActivity;
 import com.zaitunlabs.zlcore.events.InfoCounterEvent;
@@ -171,6 +172,18 @@ public class HomeActivity extends BaseActivity
     @Subscribe
     public void onEvent(ShowBookmarkInfoEvent event){
         newFragment.openNewLink(event.getLink());
+    }
+
+    @Subscribe
+    public void onEvent(GeneralWebviewEvent event){
+        if(event.getEventType() == GeneralWebviewEvent.LOAD_PAGE_FINISHED){
+            /*
+            newFragment.runJavascript("(function() { " +
+                    "document.getElementById('home').style.display='none';})()");
+            newFragment.runJavascript("(function() { " +
+                    "document.getElementById('footer').style.display='none';})()");
+                    */
+        }
     }
 
     @Override
