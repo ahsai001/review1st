@@ -1,5 +1,8 @@
 [
     {
+        "item": "version 1.4.5.17",
+        "description": "- perbaikan nama aplikasi saat device berbahasa indonesia"
+    },{
         "item": "version 1.4.4.16",
         "description": "- perbaikan aplikasi karena masalah saat membuka beberapa menu\n- tambah fitur pencarian artikel berdasarkan kata kunci\n- merubah ikon pada menu drawer\n- peningkatan performa beberapa hal"
     },{
