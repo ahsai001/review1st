@@ -129,7 +129,7 @@ public class HomeActivity extends BaseActivity
                         whiteListDomains.add("review1st.id");
                         whiteListDomains.add("review1st.com");
                         whiteListDomains.add("www.review1st.com");
-                        newFragment.setArg(HomeActivity.this, 0, null,null,null,-1,false,null, whiteListDomains);
+                        newFragment.setArg(HomeActivity.this, 0, null,AppConfig.mainURL,"Oops, ada masalah, ulangi kembali",-1,false,null, whiteListDomains);
                         transaction.replace(R.id.home_container, newFragment, WebViewFragment.FRAGMENT_TAG);
                         transaction.commit();
 
