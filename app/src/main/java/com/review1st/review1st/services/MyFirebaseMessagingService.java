@@ -4,7 +4,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.review1st.review1st.R;
 import com.review1st.review1st.activities.HomeActivity;
-import com.zaitunlabs.zlcore.utils.NotificationUtils;
+import com.zaitunlabs.zlcore.utils.NotificationUtil;
 import com.zaitunlabs.zlcore.utils.PrefsData;
 
 import java.util.HashMap;
@@ -46,7 +46,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             data.put(item.getKey(), item.getValue());
         }
 
-        NotificationUtils.onMessageReceived(getBaseContext(),data, notifTitle, notifBody
-        ,HomeActivity.class, null, null, R.string.app_name,R.mipmap.ic_launcher, null);
+        NotificationUtil.onMessageReceived(getBaseContext(),data, notifTitle, notifBody
+        ,HomeActivity.class, null, null, R.string.app_name,R.mipmap.ic_launcher, null, false);
     }
 }

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.review1st.review1st.R;
 import com.zaitunlabs.zlcore.activities.BaseSplashActivity;
 import com.zaitunlabs.zlcore.api.APIConstant;
-import com.zaitunlabs.zlcore.utils.CommonUtils;
+import com.zaitunlabs.zlcore.utils.CommonUtil;
 
 /**
  * Created by ahsai on 4/20/2018.
@@ -17,7 +17,7 @@ public class InitApp extends BaseSplashActivity {
         super.onCreate(savedInstanceState);
         setBackgroundPaneColor(R.color.colorPrimaryDark);
         setImageIcon(R.mipmap.ic_launcher);
-        setBottomTextView(getString(R.string.app_name)+" versi "+ CommonUtils.getVersionName(this), android.R.color.white);
+        setBottomTextView(getString(R.string.app_name)+" versi "+ CommonUtil.getVersionName(this), android.R.color.white);
     }
 
     @Override
@@ -29,6 +29,11 @@ public class InitApp extends BaseSplashActivity {
     protected boolean doNextAction() {
         HomeActivity.start(this);
         return true;
+    }
+
+    @Override
+    protected boolean isMeidIncluded() {
+        return false;
     }
 
     @Override

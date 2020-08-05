@@ -15,8 +15,16 @@
         <item android:checkable="true"
             android:id="@+id/nav_ig"
             app:actionViewClass="android.widget.TextView"
-            android:icon="@drawable/baseline_web_24"
-            android:title="IG" />
+            android:icon="@drawable/ic_instagram"
+            android:title="Instagram" />
+    </group>
+
+    <group android:id="@+id/nav_group_youtube" android:checkableBehavior="single">
+        <item android:checkable="true"
+            android:id="@+id/nav_youtube"
+            app:actionViewClass="android.widget.TextView"
+            android:icon="@drawable/ic_youtube"
+            android:title="Youtube" />
     </group>
 
     <group android:id="@+id/nav_group_reviews" android:checkableBehavior="single">
@@ -34,6 +42,10 @@
                 android:id="@+id/nav_news_teknologi"
                 android:icon="@drawable/baseline_watch_24"
                 android:title="Teknologi" />
+            <item android:checkable="true"
+                android:id="@+id/nav_news_infografik"
+                android:icon="@drawable/ic_infografik"
+                android:title="Infografik" />
             <item android:checkable="true"
                 android:id="@+id/nav_news_telekomunikasi"
                 android:icon="@drawable/baseline_tap_and_play_24"
@@ -85,6 +97,22 @@
                 android:title="Mobil" />
         </menu>
     </item>
+
+    <group android:id="@+id/nav_group_hp_baru" android:checkableBehavior="single">
+        <item android:checkable="true"
+            android:id="@+id/nav_hp_baru"
+            app:actionViewClass="android.widget.TextView"
+            android:icon="@drawable/ic_new"
+            android:title="HP Baru" />
+    </group>
+
+    <group android:id="@+id/nav_group_gadget" android:checkableBehavior="single">
+        <item android:checkable="true"
+            android:id="@+id/nav_gadget"
+            app:actionViewClass="android.widget.TextView"
+            android:icon="@drawable/ic_gadget"
+            android:title="Gadget" />
+    </group>
 
 
     <group android:id="@+id/nav_group_kontak" android:checkableBehavior="single">

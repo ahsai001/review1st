@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -33,6 +35,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.URLUtil;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -48,18 +51,18 @@ import com.zaitunlabs.zlcore.activities.MessageListActivity;
 import com.zaitunlabs.zlcore.activities.StoreActivity;
 import com.zaitunlabs.zlcore.api.APIConstant;
 import com.zaitunlabs.zlcore.events.GeneralWebviewEvent;
-import com.zaitunlabs.zlcore.models.InformationModel;
 import com.zaitunlabs.zlcore.core.BaseActivity;
 import com.zaitunlabs.zlcore.events.InfoCounterEvent;
 import com.zaitunlabs.zlcore.events.ShowBookmarkInfoEvent;
 import com.zaitunlabs.zlcore.fragments.GeneralWebViewFragment;
 import com.zaitunlabs.zlcore.modules.about.AboutUs;
 import com.zaitunlabs.zlcore.services.*;
-import com.zaitunlabs.zlcore.utils.CommonUtils;
-import com.zaitunlabs.zlcore.utils.EventsUtils;
-import com.zaitunlabs.zlcore.utils.LinkUtils;
-import com.zaitunlabs.zlcore.utils.PermissionUtils;
-import com.zaitunlabs.zlcore.utils.ViewUtils;
+import com.zaitunlabs.zlcore.tables.InformationModel;
+import com.zaitunlabs.zlcore.utils.CommonUtil;
+import com.zaitunlabs.zlcore.utils.EventsUtil;
+import com.zaitunlabs.zlcore.utils.LinkUtil;
+import com.zaitunlabs.zlcore.utils.PermissionUtil;
+import com.zaitunlabs.zlcore.utils.ViewUtil;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -67,6 +70,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -74,7 +78,7 @@ public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private WebViewFragment newFragment;
     private TextView messageItemView;
-    private PermissionUtils permissionUtils;
+    private PermissionUtil permissionUtils;
     private String titleWebPage;
     private String descWebPage;
     @Override
@@ -104,7 +108,7 @@ public class HomeActivity extends BaseActivity
 
         navigationView.setItemIconTintList(null);
 
-        permissionUtils = PermissionUtils.checkPermissionAndGo(this, 1122, false, null, null,
+        permissionUtils = PermissionUtil.checkPermissionAndGo(this, 1122, false, null, null,
                 new Runnable() {
                     @Override
                     public void run() {
@@ -120,7 +124,12 @@ public class HomeActivity extends BaseActivity
 
                         transaction = getSupportFragmentManager().beginTransaction();
                         newFragment = new WebViewFragment();
-                        newFragment.setArg(1, AppConfig.mainURL, null, -1, true, false, null, null, null);
+                        ArrayList<String> whiteListDomains = new ArrayList<String>();
+                        whiteListDomains.add("www.review1st.id");
+                        whiteListDomains.add("review1st.id");
+                        whiteListDomains.add("review1st.com");
+                        whiteListDomains.add("www.review1st.com");
+                        newFragment.setArg(HomeActivity.this, 0, null,null,null,-1,false,null, whiteListDomains);
                         transaction.replace(R.id.home_container, newFragment, WebViewFragment.FRAGMENT_TAG);
                         transaction.commit();
 
@@ -135,7 +144,7 @@ public class HomeActivity extends BaseActivity
         messageItemView = (TextView) navigationView.getMenu().
                 findItem(R.id.nav_message).getActionView();
 
-        EventsUtils.register(this);
+        EventsUtil.register(this);
         reCountMessage();
 
         handleIntentFromAppLink(getIntent());
@@ -156,7 +165,7 @@ public class HomeActivity extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
-        FCMIntentService.startSending(this, APIConstant.API_APPID, false);
+        FCMIntentService.startSending(this, APIConstant.API_APPID, false,false);
     }
 
     @Override
@@ -171,25 +180,24 @@ public class HomeActivity extends BaseActivity
 
     @Subscribe
     public void onEvent(ShowBookmarkInfoEvent event){
-        newFragment.openNewLink(event.getLink());
+        newFragment.openNewLinkOrContent(event.getLink());
     }
 
     @Subscribe
     public void onEvent(GeneralWebviewEvent event){
         if(event.getEventType() == GeneralWebviewEvent.LOAD_PAGE_FINISHED){
-            /*
             newFragment.runJavascript("(function() { " +
-                    "document.getElementById('home').style.display='none';})()");
+                    "document.getElementById('masthead').style.display='none';})()");
             newFragment.runJavascript("(function() { " +
-                    "document.getElementById('footer').style.display='none';})()");
-                    */
+                    "document.getElementById('colophon').style.display='none';})()");
+
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventsUtils.unregister(this);
+        EventsUtil.unregister(this);
     }
 
     private void reCountMessage(){
@@ -203,6 +211,7 @@ public class HomeActivity extends BaseActivity
 
     @Override
     protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         handleIntentFromAppLink(intent);
     }
 
@@ -211,7 +220,7 @@ public class HomeActivity extends BaseActivity
         Uri data = intent.getData();
 
         if(action != null && action.equalsIgnoreCase(Intent.ACTION_VIEW)){
-            newFragment.openNewLink(LinkUtils.getUrlFromUri(data));
+            newFragment.openNewLinkOrContent(LinkUtil.getUrlFromUri(data));
         }
 
     }
@@ -252,7 +261,7 @@ public class HomeActivity extends BaseActivity
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 searchView.clearFocus();
-                CommonUtils.hideKeyboard(HomeActivity.this);
+                CommonUtil.hideKeyboard(HomeActivity.this);
                 return true;
             }
         });
@@ -262,14 +271,14 @@ public class HomeActivity extends BaseActivity
             public boolean onQueryTextSubmit(String query) {
                 if(newFragment != null) {
                     try {
-                        newFragment.openNewLink("https://www.review1st.com/?s="+CommonUtils.urlEncode(query));
+                        newFragment.openNewLinkOrContent("https://www.review1st.com/?s="+CommonUtil.urlEncode(query));
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
                 }
 
                 searchView.clearFocus();
-                CommonUtils.hideKeyboard(HomeActivity.this);
+                CommonUtil.hideKeyboard(HomeActivity.this);
                 return true;
             }
 
@@ -286,7 +295,7 @@ public class HomeActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.action_browser) {
-            CommonUtils.openBrowser(this,AppConfig.mainBrowserURL);
+            CommonUtil.openBrowser(this,AppConfig.mainBrowserURL);
             return true;
         } else if(id == android.R.id.home){
             if(newFragment != null && newFragment.navigateBack()){
@@ -295,7 +304,7 @@ public class HomeActivity extends BaseActivity
         } else if(id == R.id.action_home_share){
             if(newFragment != null && newFragment.isVisible()
                     && !TextUtils.isEmpty(titleWebPage) && !TextUtils.isEmpty(descWebPage)){
-                CommonUtils.shareContent(HomeActivity.this, "share via",
+                CommonUtil.shareContent(HomeActivity.this, "share via",
                         titleWebPage, descWebPage+"\n\n"+"for more info\n\n"+newFragment.getCurrentUrl());
             }
         }
@@ -321,45 +330,53 @@ public class HomeActivity extends BaseActivity
                     0,R.string.feedback_mail_to, R.string.feedback_title, R.string.feedback_body_template,
                     0,R.raw.version_change_history, true, AppConfig.appLandingURL,
                     false, "Review1st", AppConfig.mainURL,getString(R.string.feedback_mail_to),R.mipmap.ic_launcher,"2018\nAll right reserved",
-                    R.color.colorPrimary,ContextCompat.getColor(this,android.R.color.white),ContextCompat.getColor(this,android.R.color.white),AppConfig.aboutAppURL);
+                    R.color.colorPrimary,ContextCompat.getColor(this,android.R.color.white),ContextCompat.getColor(this,android.R.color.white),AppConfig.aboutAppURL,false);
         } else if (id == R.id.nav_app_list) {
-            AppListActivity.start(this);
+            AppListActivity.start(this,false);
         } else if (id == R.id.nav_store) {
-            StoreActivity.start(this);
+            StoreActivity.start(this,false);
         } else if (id == R.id.nav_message) {
-            MessageListActivity.start(this);
+            MessageListActivity.start(this,false);
         } else if (id == R.id.nav_bookmark_list){
             BookmarkListActivity.start(this);
         } else if (id == R.id.nav_home){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com?clearhistory");
+            if(newFragment != null) newFragment.openNewLinkOrContent("https://www.review1st.com?clearhistory");
         } else if (id == R.id.nav_ig){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/ig-stream/?clearhistory");
+            CommonUtil.openUrlWithPackageName(this,"https://www.instagram.com/review1st","com.instagram.android");
+        } else if (id == R.id.nav_youtube){
+            CommonUtil.openUrlWithPackageName(this, "https://www.youtube.com/c/review1stdotcom", "com.google.android.youtube");
         } else if (id == R.id.nav_reviews){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/review/?clearhistory");
+            if(newFragment != null) newFragment.openNewLinkOrContent("https://www.review1st.com/category/tes?clearhistory");
         } else if (id == R.id.nav_news_teknologi){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/news/teknologi?clearhistory");
+            if(newFragment != null) newFragment.openNewLinkOrContent("https://www.review1st.com/category/news/teknologi?clearhistory");
+        } else if (id == R.id.nav_news_infografik){
+            if(newFragment != null) newFragment.openNewLinkOrContent("https://www.review1st.com/category/news/infografik?clearhistory");
         } else if (id == R.id.nav_news_telekomunikasi){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/news/telekomunikasi?clearhistory");
+            if(newFragment != null) newFragment.openNewLinkOrContent("https://www.review1st.com/category/news/telekomunikasi?clearhistory");
         } else if (id == R.id.nav_news_rumor){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/news/rumor?clearhistory");
+            if(newFragment != null) newFragment.openNewLinkOrContent("https://www.review1st.com/category/news/rumor?clearhistory");
         } else if (id == R.id.nav_aplikasi){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/game-aplikasi/?clearhistory");
+            if(newFragment != null) newFragment.openNewLinkOrContent("https://www.review1st.com/category/game-aplikasi?clearhistory");
         } else if (id == R.id.nav_buyers_guide) {
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/harga-spesifikasi/?clearhistory");
+            if(newFragment != null) newFragment.openNewLinkOrContent("https://www.review1st.com/category/harga-spesifikasi?clearhistory");
+        } else if (id == R.id.nav_hp_baru) {
+            if(newFragment != null) newFragment.openNewLinkOrContent("https://www.review1st.com/category/hp?clearhistory");
+        } else if (id == R.id.nav_gadget) {
+            if(newFragment != null) newFragment.openNewLinkOrContent("https://www.review1st.com/category/gadget?clearhistory");
         } else if (id == R.id.nav_kontak){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/contact-us/?clearhistory");
+            if(newFragment != null) newFragment.openNewLinkOrContent("https://www.review1st.com/contact-us?clearhistory");
         } else if (id == R.id.nav_tipstrik){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/category/tipstrik/?clearhistory");
+            if(newFragment != null) newFragment.openNewLinkOrContent("https://www.review1st.com/category/tipstrik?clearhistory");
         } else if (id == R.id.nav_tentang_kami){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/about/?clearhistory");
+            if(newFragment != null) newFragment.openNewLinkOrContent("https://www.review1st.com/about?clearhistory");
         } else if (id == R.id.nav_spesifikasi_mobil){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/p/spesifikasi/mobil?clearhistory");
+            if(newFragment != null) newFragment.openNewLinkOrContent("https://www.review1st.id/spesifikasi/mobil?clearhistory");
         } else if (id == R.id.nav_spesifikasi_smartphone){
-            if(newFragment != null) newFragment.openNewLink("https://www.review1st.com/p/spesifikasi/smartphone?clearhistory");
+            if(newFragment != null) newFragment.openNewLinkOrContent("https://www.review1st.id/spesifikasi/smartphone?clearhistory");
         }
 
         if(newFragment == null){
-            CommonUtils.showDialog1Option(HomeActivity.this, "Informasi", "Mohon untuk memberikan permission read phone state", null, null);
+            CommonUtil.showDialog1Option(HomeActivity.this, "Informasi", "Mohon untuk memberikan permission read phone state", null, null);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -400,6 +417,23 @@ public class HomeActivity extends BaseActivity
             webView.addJavascriptInterface(new WebAppInterface(this.getActivity()), "review1st");
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        @Override
+        protected boolean handleCustomLink(WebView view, WebResourceRequest request) {
+            handleCustomLink(view, request.getUrl().toString());
+            return true;
+        }
+
+        @Override
+        protected boolean handleCustomLink(WebView view, String url) {
+            if(url.contains("https://www.instagram.com")){
+                CommonUtil.openUrlWithPackageName(view.getContext(),url,"com.instagram.android");
+            } else if(url.contains("https://www.youtube.com")){
+                CommonUtil.openUrlWithPackageName(view.getContext(), url, "com.google.android.youtube");
+            }
+            return true;
+        }
+
         private class WebAppInterface {
             Activity activity;
 
@@ -411,13 +445,13 @@ public class HomeActivity extends BaseActivity
             /** Show a toast from the web page */
             @JavascriptInterface
             public void showToast(String toast) {
-                CommonUtils.showToast(activity,toast);
+                CommonUtil.showToast(activity,toast);
             }
 
 
             @JavascriptInterface
             public void showInfo(String title, String info) {
-                CommonUtils.showInfo(activity,title,info);
+                CommonUtil.showInfo(activity,title,info);
             }
 
             @JavascriptInterface
@@ -428,7 +462,7 @@ public class HomeActivity extends BaseActivity
 
             @JavascriptInterface
             public void openBrowser(String link) {
-                CommonUtils.openBrowser(activity, link);
+                CommonUtil.openBrowser(activity, link);
             }
 
             @JavascriptInterface
@@ -450,183 +484,20 @@ public class HomeActivity extends BaseActivity
 
             @JavascriptInterface
             public String getVersionName(){
-                return CommonUtils.getVersionName(activity);
+                return CommonUtil.getVersionName(activity);
             }
 
-            @JavascriptInterface
-            public void shareKajian(String title, String body){
-                String _title = "";
-
-                try {
-                    _title = URLDecoder.decode(title,"UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-
-                String _body = "";
-
-                try {
-                    _body = URLDecoder.decode(body,"UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                CommonUtils.shareContent(activity,"share via :",_title,_body);
-            }
 
             @JavascriptInterface
             public void openMaps(final String latLong){
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        CommonUtils.navigateGMaps(activity,latLong);
+                        CommonUtil.navigateGMaps(activity,latLong);
 
                     }
                 });
 
-            }
-
-            @JavascriptInterface
-            public void remindMe(final String titleAndUstadz,final String dateX,final String dateXString,final String starttimeX,final String endtimeX,final String locationX){
-            /*
-            Intent intent = new Intent(Intent.ACTION_INSERT)
-                    .setType("vnd.android.cursor.item/event")
-                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, Calendar.getInstance().getTimeInMillis())
-                    .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, Calendar.getInstance().getTimeInMillis()+60*60*1000)
-                    .putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY , false) // just included for completeness
-                    .putExtra(CalendarContract.Events.TITLE, "My Awesome Event")
-                    .putExtra(CalendarContract.Events.DESCRIPTION, "Heading out with friends to do something awesome.")
-                    .putExtra(CalendarContract.Events.EVENT_LOCATION, "Earth")
-                    .putExtra(CalendarContract.Events.RRULE, "FREQ=DAILY;COUNT=10")
-                    .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY)
-                    .putExtra(CalendarContract.Events.ACCESS_LEVEL, CalendarContract.Events.ACCESS_PRIVATE)
-                    .putExtra(Intent.EXTRA_EMAIL, "my.friend@example.com");
-            activity.startActivity(intent);
-            */
-
-
-                final String dateTimeString = dateXString+" "+starttimeX+" - "+endtimeX;
-
-
-                CommonUtils.showDialog2Option(activity, activity.getText(R.string.title_tambah_pengingat).toString(),
-                        activity.getText(R.string.message_tambah_pengingat).toString(),
-                        activity.getText(R.string.lanjutkan).toString(), new Runnable() {
-                            @Override
-                            public void run() {
-                                Date startTime = null;
-                                Date endTime = null;
-
-                                SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                                sf.setLenient(true);
-
-                                try {
-                                    startTime = sf.parse(dateX+" "+starttimeX);
-                                } catch (ParseException e) {
-                                    //do nothing
-                                    e.printStackTrace();
-                                }
-
-                                try {
-                                    endTime = sf.parse(dateX+" "+endtimeX);
-                                } catch (ParseException e) {
-                                    //do nothing
-                                    e.printStackTrace();
-                                }
-
-
-                                String _titleAndUstadz = "";
-
-                                try {
-                                    _titleAndUstadz = URLDecoder.decode(titleAndUstadz,"UTF-8");
-                                } catch (UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                }
-
-                                String _locationX = "";
-
-                                try {
-                                    _locationX = URLDecoder.decode(locationX,"UTF-8");
-                                } catch (UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                }
-
-                                addEvent(activity,_titleAndUstadz,startTime,endTime,_locationX, dateTimeString);
-                            }
-                        }, activity.getText(R.string.batalkan).toString(), new Runnable() {
-                            @Override
-                            public void run() {
-
-                            }
-                        });
-
-            }
-            @JavascriptInterface
-            public void callNumber(final String number){
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        CommonUtils.callNumber(activity,number);
-                    }
-                });
-            }
-
-
-
-
-            // Add an event to the calendar of the user.
-            private void addEvent(Context context, String titleAndUstadz, Date startTime, Date endTime, String location, String dateTimeString) {
-                Calendar beginTime = Calendar.getInstance();
-                try {
-                    ContentResolver cr = context.getContentResolver();
-                    ContentValues values = new ContentValues();
-
-                    if(startTime != null) {
-                        values.put(CalendarContract.Events.DTSTART, startTime.getTime());
-                    }
-
-                    if(endTime != null) {
-                        values.put(CalendarContract.Events.DTEND, endTime.getTime());
-                    }
-
-                    values.put(CalendarContract.Events.TITLE, titleAndUstadz);
-                    values.put(CalendarContract.Events.EVENT_LOCATION, location);
-
-                    values.put(CalendarContract.Events.CALENDAR_ID, 1);
-
-
-                    values.put(CalendarContract.Events.EVENT_TIMEZONE, Calendar.getInstance().getTimeZone().getID());
-                    Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
-
-
-                    // Save the eventId into the Task object for possible future delete.
-                    long _eventId = Long.parseLong(uri.getLastPathSegment());
-                    // Add a 5 minute, 1 hour and 1 day reminders (3 reminders)
-                    //setReminder(cr, _eventId, 5);
-                    setReminder(cr, _eventId, 60);
-                    //setReminder(cr, _eventId, 1440);
-                    if(_eventId > 0){
-                        CommonUtils.showToast(context,context.getText(R.string.message_sukses_add_reminder).toString() + " pada "+dateTimeString);
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            // routine to add reminders with the event
-            public void setReminder(ContentResolver cr, long eventID, int timeBefore) {
-                try {
-                    ContentValues values = new ContentValues();
-                    values.put(CalendarContract.Reminders.MINUTES, timeBefore);
-                    values.put(CalendarContract.Reminders.EVENT_ID, eventID);
-                    values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
-                    Uri uri = cr.insert(CalendarContract.Reminders.CONTENT_URI, values);
-                    Cursor c = CalendarContract.Reminders.query(cr, eventID,new String[]{CalendarContract.Reminders.MINUTES});
-                    if (c.moveToFirst()) {
-                    }
-                    c.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
 
         }

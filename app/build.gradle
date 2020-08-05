@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
     defaultConfig {
         applicationId "com.review1st.review1st"
         minSdkVersion 16
-        targetSdkVersion 28
-        versionCode 6
-        versionName "1.4.5.17"
+        targetSdkVersion 30
+        versionCode 7
+        versionName "1.7.6.20"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -53,8 +53,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-ads:17.2.1'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
-    implementation 'com.github.ahsai001:zlcore:1.2.41.69'
+    implementation 'com.github.ahsai001:zlcore:1.10.77.179'
     //implementation project(':zlcore')
+
+
+    implementation 'com.github.ahsai001.SQLiteWrapper:Core:0.3.13.8'
+    implementation 'com.github.ahsai001.SQLiteWrapper:Annotation:0.3.13.8'
+    annotationProcessor 'com.github.ahsai001.SQLiteWrapper:Processor:0.3.13.8'
 
 }
 
